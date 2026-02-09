@@ -1,0 +1,39 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: portafolio-backend
+  
+  # CONFIGURACIÓN DE CORREO
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: d01072004@gmail.com
+    password: "ivoh iwck qcny lbyd"
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+  datasource:
+    # Render inyectará estas variables. Si no existen, usa tus datos locales (ups/ups123)
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/portafolio_db}
+    username: ${DB_USERNAME:ups}
+    password: ${DB_PASSWORD:ups123}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+jwt:
+  secret: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+  expiration: 86400000
