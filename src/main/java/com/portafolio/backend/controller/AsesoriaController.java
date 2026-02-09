@@ -17,7 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/asesorias")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = { "http://localhost:4200", "https://portfolio-integrador-31c6f.web.app" })
 public class AsesoriaController {
 
     private final AsesoriaRepository asesoriaRepository;
@@ -40,7 +40,7 @@ public class AsesoriaController {
         cita.setProgramador(programador);
         cita.setEstado(EstadoAsesoria.PENDIENTE);
 
-        // Corrección de fecha
+        // Formateo de fecha
         String fechaString = request.getFecha();
         if (fechaString.length() == 16) {
             fechaString += ":00";
@@ -49,7 +49,7 @@ public class AsesoriaController {
 
         Asesoria guardada = asesoriaRepository.save(cita);
 
-        // 📧 NOTIFICACIÓN 1: Al Programador (Nueva Solicitud)
+        // 📧 El envío ahora es asíncrono, no retrasará la respuesta del servidor
         emailService.enviarCorreo(
                 programador.getEmail(),
                 "🚀 Nueva Solicitud de Asesoría",
@@ -76,16 +76,12 @@ public class AsesoriaController {
         return asesoriaRepository.findByProgramador(prog);
     }
 
-    // --- AQUÍ ESTÁ LA ACTUALIZACIÓN CLAVE ---
     @PutMapping("/{id}/responder")
     public Asesoria responder(@PathVariable Long id, @RequestParam String estado) {
         Asesoria cita = asesoriaRepository.findById(id).orElseThrow();
-
-        // Actualizamos estado
         cita.setEstado(EstadoAsesoria.valueOf(estado));
         Asesoria citaActualizada = asesoriaRepository.save(cita);
 
-        // 📧 NOTIFICACIÓN 2: Al Cliente (Respuesta Aceptada/Rechazada)
         String asunto = "Actualización de tu Asesoría: " + estado;
         String mensaje = "Hola " + cita.getCliente().getNombre() + ",\n\n" +
                 "Tu solicitud sobre '" + cita.getTema() + "' ha sido " + estado + ".\n" +
