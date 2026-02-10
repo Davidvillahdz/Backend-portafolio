@@ -8,9 +8,7 @@ public class RegisterRequest {
     private String nombre;
     private String email;
     private String password;
-    private Rol rol; // ADMIN, PROGRAMADOR, USUARIO
-
-    // Campos opcionales para programador
+    private Rol rol;
     private String especialidad;
     private String descripcion;
     private String github;

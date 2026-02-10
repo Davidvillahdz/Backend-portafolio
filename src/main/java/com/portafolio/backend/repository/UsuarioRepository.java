@@ -7,11 +7,8 @@ import java.util.Optional;
 import java.util.List;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
-
-    // Método mágico para buscar por email (indispensable para el Login)
     Optional<Usuario> findByEmail(String email);
 
-    // Para listar solo programadores en la página de inicio
     List<Usuario> findByRol(Rol rol);
 
 }

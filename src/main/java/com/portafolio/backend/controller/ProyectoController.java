@@ -11,20 +11,20 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/proyectos")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = { "http://localhost:4200", "https://portfolio-integrador-31c6f.web.app" })
 public class ProyectoController {
 
     private final ProyectoService proyectoService;
 
-    // --- MÉTODOS PÚBLICOS ---
+    // MÉTODOS PÚBLICOS
 
-    // Ver proyectos de un experto (ESTE ES EL QUE DABA ERROR 403)
+    // Ver proyectos de un experto
     @GetMapping("/programador/{id}")
     public List<Proyecto> proyectosPorProgramador(@PathVariable Long id) {
         return proyectoService.obtenerProyectosPorUsuarioId(id);
     }
 
-    // --- MÉTODOS PRIVADOS (Requieren Token) ---
+    // MÉTODOS PRIVADOS
 
     // Ver mis propios proyectos
     @GetMapping("/mis-proyectos")

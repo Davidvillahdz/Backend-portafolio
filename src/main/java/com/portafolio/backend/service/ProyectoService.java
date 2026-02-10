@@ -18,7 +18,7 @@ public class ProyectoService {
     private final ProyectoRepository proyectoRepository;
     private final UsuarioRepository usuarioRepository;
 
-    // 1. CREAR PROYECTO (Privado)
+    // 1. CREAR PROYECTO
     public Proyecto crearProyecto(ProyectoDto dto) {
         Usuario usuario = obtenerUsuarioActual();
 
@@ -33,21 +33,20 @@ public class ProyectoService {
         return proyectoRepository.save(proyecto);
     }
 
-    // 2. LISTAR MIS PROYECTOS (Privado - Para el panel de control)
+    // 2. LISTAR MIS PROYECTOS
     public List<Proyecto> obtenerMisProyectos() {
         Usuario usuario = obtenerUsuarioActual();
         return proyectoRepository.findByUsuario(usuario);
     }
 
-    // 3. LISTAR PROYECTOS DE UN EXPERTO (Público - Por ID)
-    // Este es el método que te faltaba y causaba el error
+    // 3. LISTAR PROYECTOS DE UN EXPERTO
     public List<Proyecto> obtenerProyectosPorUsuarioId(Long usuarioId) {
         Usuario usuario = usuarioRepository.findById(usuarioId)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
         return proyectoRepository.findByUsuario(usuario);
     }
 
-    // 4. BORRAR PROYECTO (Privado)
+    // 4. BORRAR PROYECTO
     public void borrarProyecto(Long id) {
         Usuario usuario = obtenerUsuarioActual();
         Proyecto proyecto = proyectoRepository.findById(id)
@@ -59,7 +58,6 @@ public class ProyectoService {
         proyectoRepository.deleteById(id);
     }
 
-    // Auxiliar para saber quién está logueado
     private Usuario obtenerUsuarioActual() {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         return usuarioRepository.findByEmail(email)

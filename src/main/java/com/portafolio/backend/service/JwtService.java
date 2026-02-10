@@ -27,15 +27,12 @@ public class JwtService {
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> extraClaims = new HashMap<>();
 
-        // --- ARREGLO DE ROL ---
-        // Convertimos "[ROLE_ADMIN]" a "ADMIN" para que Angular lo entienda
         String rolSucio = userDetails.getAuthorities().toString();
         String rolLimpio = rolSucio.replace("[", "")
                 .replace("]", "")
                 .replace("ROLE_", "");
 
         extraClaims.put("rol", rolLimpio);
-        // ---------------------
 
         return generateToken(extraClaims, userDetails);
     }
@@ -50,8 +47,6 @@ public class JwtService {
                 .compact();
     }
 
-    // ... (El resto de tus métodos: isTokenValid, extractUsername, etc. déjalos
-    // igual)
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
         return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);

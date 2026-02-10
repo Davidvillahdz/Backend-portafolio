@@ -14,33 +14,29 @@ public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtService jwtService; // Para generar el token al registrarse
+    private final JwtService jwtService;
 
     public String registrarUsuario(RegisterRequest request) {
         if (usuarioRepository.findByEmail(request.getEmail()).isPresent()) {
             throw new RuntimeException("El correo ya está registrado");
         }
-        // 1. Crear el objeto Usuario
+
         Usuario usuario = new Usuario();
         usuario.setNombre(request.getNombre());
         usuario.setEmail(request.getEmail());
 
-        // 2. ENCRIPTAR LA CONTRASEÑA (Obligatorio)
         usuario.setPassword(passwordEncoder.encode(request.getPassword()));
 
         usuario.setRol(request.getRol() != null ? request.getRol() : Rol.USUARIO);
 
-        // Campos extra
         usuario.setEspecialidad(request.getEspecialidad());
         usuario.setDescripcion(request.getDescripcion());
         usuario.setGithub(request.getGithub());
         usuario.setLinkedin(request.getLinkedin());
         usuario.setWhatsapp(request.getWhatsapp());
 
-        // 3. Guardar en Base de Datos
         usuarioRepository.save(usuario);
 
-        // 4. Generar y retornar Token inmediatamente
         return jwtService.generateToken(usuario);
     }
 }

@@ -14,13 +14,9 @@ public class HorarioDisponibilidad {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private String diaSemana; // Ejemplo: "Lunes", "Martes"
-
+    private String diaSemana;
     private LocalTime horaInicio;
     private LocalTime horaFin;
-
-    // Relación: Muchos horarios pertenecen a un Programador
     @ManyToOne
     @JoinColumn(name = "programador_id", nullable = false)
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })

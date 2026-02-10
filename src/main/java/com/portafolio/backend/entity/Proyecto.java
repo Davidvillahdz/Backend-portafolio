@@ -22,10 +22,8 @@ public class Proyecto {
     private String repoUrl;
     private String demoUrl;
 
-    // --- AQUÍ ESTÁ LA CLAVE ---
-    // Aunque lógicamente es un "Programador", la tabla en BD se llama "usuario"
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "usuario_id") // Esto crea la columna que guarda el ID del programador
+    @JoinColumn(name = "usuario_id")
     @JsonIgnoreProperties({ "password", "roles", "proyectos", "tokens" })
     private Usuario usuario;
 }

@@ -13,12 +13,12 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/usuarios")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = { "http://localhost:4200", "https://portfolio-integrador-31c6f.web.app" })
 public class UsuarioController {
 
     private final UsuarioRepository usuarioRepository;
 
-    // 1. LISTA DE PROGRAMADORES (Público - Para el Home)
+    // 1. LISTA DE PROGRAMADORES
     @GetMapping("/programadores")
     public List<Usuario> listarProgramadores() {
         return usuarioRepository.findAll().stream()
@@ -26,14 +26,14 @@ public class UsuarioController {
                 .collect(Collectors.toList());
     }
 
-    // 2. OBTENER PERFIL PÚBLICO POR ID (Público - Para ver detalle del experto)
+    // 2. OBTENER PERFIL PÚBLICO POR ID
     @GetMapping("/{id}")
     public Usuario obtenerUsuarioPorId(@PathVariable Long id) {
         return usuarioRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
     }
 
-    // 3. MI PERFIL (Privado)
+    // 3. MI PERFIL
     @GetMapping("/me")
     public Usuario miPerfil() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -41,24 +41,21 @@ public class UsuarioController {
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
     }
 
-    // 4. ACTUALIZAR MI PERFIL (Privado)
+    // 4. ACTUALIZAR MI PERFIL
     @PutMapping("/me")
     public Usuario actualizarPerfil(@RequestBody Usuario nuevosDatos) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Usuario usuarioActual = usuarioRepository.findByEmail(auth.getName())
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-        // Campos existentes...
         usuarioActual.setNombre(nuevosDatos.getNombre());
         usuarioActual.setEspecialidad(nuevosDatos.getEspecialidad());
         usuarioActual.setDescripcion(nuevosDatos.getDescripcion());
         usuarioActual.setGithub(nuevosDatos.getGithub());
         usuarioActual.setLinkedin(nuevosDatos.getLinkedin());
         usuarioActual.setWhatsapp(nuevosDatos.getWhatsapp());
-
-        // 🔥 ESTO ES LO QUE FALTA (AGRÉGALO):
-        usuarioActual.setHorario(nuevosDatos.getHorario()); // <--- IMPORTANTE
-        usuarioActual.setModalidad(nuevosDatos.getModalidad()); // <--- IMPORTANTE
+        usuarioActual.setHorario(nuevosDatos.getHorario());
+        usuarioActual.setModalidad(nuevosDatos.getModalidad());
 
         if (nuevosDatos.getFotoPerfil() != null && !nuevosDatos.getFotoPerfil().isEmpty()) {
             usuarioActual.setFotoPerfil(nuevosDatos.getFotoPerfil());

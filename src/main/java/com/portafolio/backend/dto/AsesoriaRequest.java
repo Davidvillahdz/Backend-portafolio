@@ -7,5 +7,5 @@ public class AsesoriaRequest {
     private Long programadorId;
     private String tema;
     private String celular;
-    private String fecha; // Cambiado a String para máxima compatibilidad
+    private String fecha;
 }

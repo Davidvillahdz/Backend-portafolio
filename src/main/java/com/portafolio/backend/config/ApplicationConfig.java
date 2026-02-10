@@ -23,9 +23,6 @@ public class ApplicationConfig {
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
     }
 
-    // ELIMINAMOS EL BEAN DE AUTHENTICATIONPROVIDER QUE DABA ERROR
-    // Spring Boot 4 lo configurará automáticamente al ver los otros beans.
-
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();

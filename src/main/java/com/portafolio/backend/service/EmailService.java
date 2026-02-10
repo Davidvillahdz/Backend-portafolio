@@ -12,8 +12,6 @@ import org.springframework.stereotype.Service;
 public class EmailService {
 
     private final JavaMailSender mailSender;
-
-    // Inyectamos tu correo desde la configuración para no escribirlo dos veces
     @Value("${spring.mail.username}")
     private String remitente;
 

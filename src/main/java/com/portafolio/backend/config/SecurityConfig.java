@@ -3,7 +3,7 @@ package com.portafolio.backend.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod; // Importante
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -27,7 +27,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
-                .cors(Customizer.withDefaults()) // Habilita la config CORS de abajo
+                .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
                         // 1. RUTAS PÚBLICAS
                         .requestMatchers("/api/auth/**").permitAll()
@@ -50,8 +50,6 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-
-        // 🔥 CAMBIO VITAL: Permitir tanto localhost como Firebase
         config.setAllowedOrigins(List.of(
                 "http://localhost:4200",
                 "https://portfolio-integrador-31c6f.web.app",

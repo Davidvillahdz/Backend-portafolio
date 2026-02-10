@@ -26,7 +26,6 @@ public class AdminController {
         Map<String, Long> stats = new HashMap<>();
         stats.put("totalUsuarios", usuarioRepository.count());
         stats.put("totalCitas", asesoriaRepository.count());
-        // Contamos cuántos programadores hay (filtrando en memoria por simplicidad)
         long programadores = usuarioRepository.findAll().stream()
                 .filter(u -> "PROGRAMADOR".equals(u.getRol().toString()))
                 .count();
@@ -41,19 +40,17 @@ public class AdminController {
         return usuarioRepository.findAll();
     }
 
-    // 3. ELIMINAR USUARIO (Ban hammer 🔨)
+    // 3. ELIMINAR USUARIO
     @DeleteMapping("/users/{id}")
     public void eliminarUsuario(@PathVariable Long id) {
         usuarioRepository.deleteById(id);
     }
 
-    // 4. CAMBIAR ROL (Ascender/Descender) - ¡NUEVO!
+    // 4. CAMBIAR ROL (Ascender/Descender)
     @PutMapping("/users/{id}/rol")
     public Usuario cambiarRol(@PathVariable Long id, @RequestParam String nuevoRol) {
         Usuario usuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-
-        // Convertimos el String (ej: "PROGRAMADOR") al Enum Rol
         usuario.setRol(Rol.valueOf(nuevoRol));
 
         return usuarioRepository.save(usuario);

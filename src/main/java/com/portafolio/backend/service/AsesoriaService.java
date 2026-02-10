@@ -54,21 +54,20 @@ public class AsesoriaService {
                 .collect(Collectors.toList());
     }
 
-    // MÉTODO 3: Responder Cita (Aceptar/Rechazar)
+    // MÉTODO 3: Responder Cita
     public Asesoria responderCita(Long id, String estado, String emailProgramador) {
         // 1. Buscamos la cita
         Asesoria cita = asesoriaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cita no encontrada"));
 
         // 2. SEGURIDAD: Verificamos que el usuario logueado sea el programador de esta
-        // cita
         if (!cita.getProgramador().getEmail().equals(emailProgramador)) {
             throw new RuntimeException("No tienes permiso para gestionar esta cita.");
         }
 
-        // 3. Convertimos el String (frontend) al Enum (backend)
+        // 3. Convertimos el String
         try {
-            EstadoAsesoria nuevoEstado = EstadoAsesoria.valueOf(estado); // "ACEPTADA" -> EstadoAsesoria.ACEPTADA
+            EstadoAsesoria nuevoEstado = EstadoAsesoria.valueOf(estado);
             cita.setEstado(nuevoEstado);
         } catch (IllegalArgumentException e) {
             throw new RuntimeException("Estado inválido: " + estado);

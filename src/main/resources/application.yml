@@ -4,8 +4,7 @@ server:
 spring:
   application:
     name: portafolio-backend
-  
-  # CONFIGURACIÓN DE CORREO
+
   mail:
     host: smtp.gmail.com
     port: 587
@@ -18,11 +17,13 @@ spring:
           starttls:
             enable: true
             required: true
-            connectiontimeout: 10000 
-          timeout: 10000           
-          writetimeout: 10000
+          connectiontimeout: 15000
+          timeout: 15000
+          writetimeout: 15000
+          ssl:
+            trust: smtp.gmail.com
+
   datasource:
-    # Render inyectará estas variables. Si no existen, usa tus datos locales (ups/ups123)
     url: ${DB_URL:jdbc:postgresql://localhost:5432/portafolio_db}
     username: ${DB_USERNAME:ups}
     password: ${DB_PASSWORD:ups123}

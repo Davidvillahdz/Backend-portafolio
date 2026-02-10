@@ -6,7 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.fasterxml.jackson.annotation.JsonIgnore; // Importante
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.Collection;
@@ -40,20 +40,16 @@ public class Usuario implements UserDetails {
 
     private String fotoPerfil;
     @Column(name = "horario_disponibilidad")
-    private String horario; // Ej: "Lunes a Viernes: 9am - 12pm"
+    private String horario;
     @Column(name = "modalidad")
-    private String modalidad; // Ej: "VIRTUAL", "PRESENCIAL", "HIBRIDO"
+    private String modalidad;
 
-    // Redes Sociales
     private String github;
     private String linkedin;
     private String whatsapp;
 
-    // --- AQUÍ ESTÁ EL ARREGLO MÁGICO ---
-    // Agregamos las listas con @JsonIgnore para romper el bucle infinito
-
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnoreProperties("usuario") // Evitamos bucle infinito
+    @JsonIgnoreProperties("usuario")
     private List<Proyecto> proyectos;
 
     @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
@@ -63,9 +59,7 @@ public class Usuario implements UserDetails {
     @OneToMany(mappedBy = "programador", fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Asesoria> asesoriasRecibidas;
-    // ------------------------------------
 
-    // --- MÉTODOS DE SEGURIDAD (UserDetails) ---
     @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
