@@ -1,15 +1,11 @@
 server:
   port: 8080
-
 spring:
-  application:
-    name: portafolio-backend
-
   mail:
     host: smtp.gmail.com
     port: 587
-    username: d01072004@gmail.com
-    password: "ivoh iwck qcny lbyd"
+    username: ${MAIL_USERNAME:d01072004@gmail.com}
+    password: ${MAIL_PASSWORD:ivoh iwck qcny lbyd}
     properties:
       mail:
         smtp:
@@ -17,9 +13,10 @@ spring:
           starttls:
             enable: true
             required: true
-          connectiontimeout: 15000
-          timeout: 15000
-          writetimeout: 15000
+          connectiontimeout: 20000
+          timeout: 20000
+          writetimeout: 20000
+
           ssl:
             trust: smtp.gmail.com
 
